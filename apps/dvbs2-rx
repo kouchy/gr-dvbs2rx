@@ -471,8 +471,8 @@ class DVBS2RxTopBlock(gr.top_block, Qt.QWidget):
             blocks_multiply_const_ff_1 = blocks.multiply_const_ff(1 / 128)
             blocks_multiply_const_ff_0 = blocks.multiply_const_ff(1 / 128)
             blocks_float_to_complex_0 = blocks.float_to_complex(1)
-            blocks_throttle_0 = blocks.throttle(gr.sizeof_gr_complex,
-                                                self.samp_rate, True)
+            #blocks_throttle_0 = blocks.throttle(gr.sizeof_gr_complex,
+            #                                    self.samp_rate, True)
             self.connect((blocks_file_or_fd_source, 0),
                          (blocks_deinterleave, 0))
             self.connect(
@@ -483,9 +483,10 @@ class DVBS2RxTopBlock(gr.top_block, Qt.QWidget):
                 (blocks_deinterleave, 1), (blocks_uchar_to_float_1, 0),
                 (blocks_add_const_ff_1, 0), (blocks_multiply_const_ff_1, 0),
                 (blocks_float_to_complex_0, 1))
-            self.connect((blocks_float_to_complex_0, 0),
-                         (blocks_throttle_0, 0))
-            source = blocks_throttle_0
+            #self.connect((blocks_float_to_complex_0, 0),
+            #             (blocks_throttle_0, 0))
+            #ource = blocks_throttle_0
+            source = blocks_float_to_complex_0
         elif (self.source == "rtl"):
             import osmosdr  # lazy import to avoid failure if source != rtl
             rtl_arg = self.rtl_serial if (self.rtl_serial
