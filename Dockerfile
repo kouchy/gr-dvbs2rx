@@ -18,7 +18,7 @@ RUN add-apt-repository -y ppa:blockstream/satellite && \
     apt install -y tsduck
 ADD . /src/gr-dvbs2rx/
 RUN cd /src/gr-dvbs2rx/ && mkdir build && cd build && \
-    cmake -DENABLE_DOXYGEN=OFF .. && \
+    cmake -DENABLE_DOXYGEN=OFF -DNATIVE_OPTIMIZATIONS=ON .. && \
     cmake --build . -j$(nproc) && \
     cmake --install . && \
     ldconfig && \
