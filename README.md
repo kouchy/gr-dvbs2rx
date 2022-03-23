@@ -54,3 +54,25 @@ free to contribute or get in touch to request features or report any problems.
 - [Ahmet Inan](https://github.com/xdsopl)
 - [Igor Freire](https://github.com/igorauad)
 - [Ron Economos](https://github.com/drmpeg/)
+
+## Throughput Evaluation Protocol
+
+Compilation:
+
+```
+mkdir build
+cd build
+cmake .. -DCMAKE_BUILD_TYPE=Release -DENABLE_DOXYGEN=OFF -DNATIVE_OPTIMIZATIONS=ON -DCMAKE_CXX_FLAGS="-funroll-loops -march=native"
+```
+
+Generate I/Q from the Tx:
+
+```
+dvbs2-tx --modcod qpsk8/9 --frame-size short --source file --in-file in.ts --sink file --out-file samples.iq --snr 26 --sym-rate 10000000
+```
+
+Launch the Rx:
+
+```
+dvbs2-rx --modcod qpsk8/9 --frame-size short --source file --in-file samples.iq --sink file --out-file out.ts --log-stats
+```
