@@ -98,29 +98,33 @@ class dvbs2_tx(gr.top_block):
             # Convert the complex IQ stream into an interleaved uchar stream.
             throttle = blocks.throttle(gr.sizeof_gr_complex, self.samp_rate,
                                        True)
-            complex_to_float_0 = blocks.complex_to_float(1)
-            multiply_const_0 = blocks.multiply_const_ff(128)
-            multiply_const_1 = blocks.multiply_const_ff(128)
-            add_const_0 = blocks.add_const_ff(127)
-            add_const_1 = blocks.add_const_ff(127)
-            float_to_uchar_0 = blocks.float_to_uchar()
-            float_to_uchar_1 = blocks.float_to_uchar()
-            interleaver = blocks.interleave(gr.sizeof_char, 1)
+            #complex_to_float_0 = blocks.complex_to_float(1)
+            #multiply_const_0 = blocks.multiply_const_ff(128)
+            #multiply_const_1 = blocks.multiply_const_ff(128)
+            #add_const_0 = blocks.add_const_ff(127)
+            #add_const_1 = blocks.add_const_ff(127)
+            #float_to_uchar_0 = blocks.float_to_uchar()
+            #float_to_uchar_1 = blocks.float_to_uchar()
+            #interleaver = blocks.interleave(gr.sizeof_char, 1)
 
             if (self.sink == "fd"):
                 file_or_fd_sink = blocks.file_descriptor_sink(
-                    gr.sizeof_char, self.out_fd)
+                    #gr.sizeof_char, self.out_fd)
+                    gr.sizeof_gr_complex, self.out_fd)
             else:
-                file_or_fd_sink = blocks.file_sink(gr.sizeof_char,
+                #file_or_fd_sink = blocks.file_sink(gr.sizeof_char,
+                #                                   self.out_file)
+                file_or_fd_sink = blocks.file_sink(gr.sizeof_gr_complex,
                                                    self.out_file)
-            self.connect((throttle, 0), (complex_to_float_0, 0))
-            self.connect((complex_to_float_0, 0), (multiply_const_0, 0))
-            self.connect((complex_to_float_0, 1), (multiply_const_1, 0))
-            self.connect((multiply_const_0, 0), (add_const_0, 0),
-                         (float_to_uchar_0, 0), (interleaver, 0))
-            self.connect((multiply_const_1, 0), (add_const_1, 0),
-                         (float_to_uchar_1, 0), (interleaver, 1))
-            self.connect((interleaver, 0), (file_or_fd_sink, 0))
+            #self.connect((throttle, 0), (complex_to_float_0, 0))
+            #self.connect((complex_to_float_0, 0), (multiply_const_0, 0))
+            #self.connect((complex_to_float_0, 1), (multiply_const_1, 0))
+            #self.connect((multiply_const_0, 0), (add_const_0, 0),
+            #             (float_to_uchar_0, 0), (interleaver, 0))
+            #self.connect((multiply_const_1, 0), (add_const_1, 0),
+            #             (float_to_uchar_1, 0), (interleaver, 1))
+            #self.connect((interleaver, 0), (file_or_fd_sink, 0))
+            self.connect((throttle, 0), (file_or_fd_sink, 0))
             # First block on the pipeline
             sink = throttle
         elif (self.sink == "usrp"):
